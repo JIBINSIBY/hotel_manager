@@ -16,7 +16,9 @@ class UserModel extends Model
         'username',
         'email', 
         'password',
-        'role'
+        'role',
+        'is_admin',
+        'name'
     ];
 
     // Dates
@@ -30,7 +32,9 @@ class UserModel extends Model
         'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username,id,{id}]',
         'email' => 'required|valid_email|is_unique[users.email,id,{id}]',
         'password' => 'required|min_length[6]',
-        'role' => 'required|in_list[admin,staff]'
+        'role' => 'required|in_list[admin,staff]',
+        'is_admin' => 'permit_empty|in_list[0,1]',
+        'name' => 'required|min_length[3]|max_length[100]'
     ];
 
     protected $validationMessages = [

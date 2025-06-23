@@ -45,18 +45,20 @@ class Auth extends BaseController
         $user = $this->userModel->where('username', $username)->first();
         
         if ($user && password_verify($password, $user['password'])) {
-            // Set session data
+            // Set session data with fallbacks for missing fields
             $sessionData = [
-                'user_id' => $user['id'],
+                'id' => $user['id'],
                 'username' => $user['username'],
-                'email' => $user['email'],
-                'role' => $user['role'],
+                'email' => $user['email'] ?? '',
+                'role' => $user['role'] ?? 'staff',
+                'is_admin' => isset($user['is_admin']) ? (bool)$user['is_admin'] : ($user['role'] ?? '') === 'admin',
+                'name' => $user['name'] ?? $user['username'],
                 'isLoggedIn' => true
             ];
             
             session()->set($sessionData);
             
-            return redirect()->to('/dashboard')->with('success', 'Welcome back, ' . $user['username']);
+            return redirect()->to('/dashboard')->with('success', 'Welcome back, ' . ($user['name'] ?? $user['username']));
         } else {
             return redirect()->back()->withInput()->with('error', 'Invalid username or password');
         }

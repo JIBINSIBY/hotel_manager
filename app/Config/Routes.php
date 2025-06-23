@@ -16,16 +16,33 @@ $routes->get('logout', 'Auth::logout');
 
 // Admin Panel routes (protected)
 $routes->group('dashboard', ['filter' => 'auth'], function($routes) {
-    $routes->get('', 'Dashboard::index');
+    $routes->get('/', 'Dashboard::index');
     
     // Guest management routes
     $routes->get('guests', 'Dashboard::guests');
+    $routes->get('guests/get/(:num)', 'Dashboard::getGuest/$1');
     $routes->post('guests/add', 'Dashboard::addGuest');
     $routes->post('guests/update/(:num)', 'Dashboard::updateGuest/$1');
     $routes->get('guests/delete/(:num)', 'Dashboard::deleteGuest/$1');
     
+    // Room management routes
+    $routes->get('rooms', 'Rooms::index');
+    $routes->post('rooms/add', 'Rooms::add');
+    $routes->get('rooms/edit/(:num)', 'Rooms::edit/$1');
+    $routes->post('rooms/edit/(:num)', 'Rooms::edit/$1');
+    $routes->get('rooms/delete/(:num)', 'Rooms::delete/$1');
+    
+    // Room availability routes
+    $routes->get('rooms/available', 'Dashboard::getAvailableRooms');
+    $routes->get('rooms/booked-dates', 'Dashboard::getBookedDates');
+
     // Service request routes
-    $routes->get('requests', 'Dashboard::requests');
+    $routes->group('requests', function($routes) {
+        $routes->get('/', 'Requests::index');
+        $routes->post('create', 'Requests::create');
+        $routes->post('update/(:num)', 'Requests::update/$1');
+        $routes->get('delete/(:num)', 'Requests::delete/$1');
+    });
 });
 
 // API routes
@@ -40,12 +57,5 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
         $routes->post('', 'Guests::create');
         $routes->put('(:num)', 'Guests::update/$1');
         $routes->delete('(:num)', 'Guests::delete/$1');
-    });
-    
-    // Service Requests API (protected)
-    $routes->group('requests', ['filter' => 'auth'], function($routes) {
-        $routes->get('', 'Requests::index');
-        $routes->post('', 'Requests::create');
-        $routes->put('(:num)/status', 'Requests::updateStatus/$1');
     });
 });

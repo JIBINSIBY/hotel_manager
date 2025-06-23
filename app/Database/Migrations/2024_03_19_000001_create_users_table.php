@@ -20,6 +20,11 @@ class CreateUsersTable extends Migration
                 'constraint' => 100,
                 'unique'     => true,
             ],
+            'name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
+                'null'      => true,
+            ],
             'email' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
@@ -34,6 +39,11 @@ class CreateUsersTable extends Migration
                 'constraint' => ['admin', 'staff'],
                 'default'    => 'staff',
             ],
+            'is_admin' => [
+                'type'       => 'TINYINT',
+                'constraint' => 1,
+                'default'    => 0,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -46,6 +56,20 @@ class CreateUsersTable extends Migration
         
         $this->forge->addKey('id', true);
         $this->forge->createTable('users');
+
+        // Add default admin user
+        $data = [
+            'username' => 'admin',
+            'name' => 'Administrator',
+            'email' => 'admin@example.com',
+            'password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'role' => 'admin',
+            'is_admin' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        
+        $this->db->table('users')->insert($data);
     }
 
     public function down()

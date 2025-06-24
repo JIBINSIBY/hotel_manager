@@ -287,9 +287,9 @@
                         <h2 class="mb-0">Guest Management</h2>
                         <p class="text-muted mb-0">Manage your hotel guests and their bookings</p>
                     </div>
-                    <button class="btn btn-primary add-guest-btn" data-bs-toggle="modal" data-bs-target="#guestModal">
+                    <a href="<?= site_url('dashboard/guests/new') ?>" class="btn btn-primary">
                         <i class="fas fa-plus me-2"></i> Add New Guest
-                    </button>
+                    </a>
                 </div>
 
                 <?php if (session()->getFlashdata('success')) : ?>

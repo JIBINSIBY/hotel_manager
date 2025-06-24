@@ -57,6 +57,28 @@ class RoomModel extends Model
                     ->findAll();
     }
 
+    // Check if a room is available for specific dates
+    public function isRoomAvailable($roomNumber, $checkInDate, $checkOutDate)
+    {
+        // First check if the room exists and is available
+        $room = $this->where('room_number', $roomNumber)->first();
+        if (!$room || $room['status'] !== 'available') {
+            return false;
+        }
+
+        // Then check if there are any overlapping bookings
+        $db = \Config\Database::connect();
+        $query = $db->table('guests')
+            ->where('room_number', $roomNumber)
+            ->where('status !=', 'checked_out')
+            ->groupStart()
+                ->where('check_in_date <=', $checkOutDate)
+                ->where('check_out_date >=', $checkInDate)
+            ->groupEnd();
+
+        return $query->countAllResults() === 0;
+    }
+
     // Get available room numbers for dropdown
     public function getAvailableRoomNumbers()
     {

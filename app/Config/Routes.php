@@ -20,6 +20,7 @@ $routes->group('dashboard', ['filter' => 'auth'], function($routes) {
     
     // Guest management routes
     $routes->get('guests', 'Guests::index');
+    $routes->get('guests/new', 'Guests::new');
     $routes->post('guests/add', 'Guests::add');
     $routes->get('guests/edit/(:num)', 'Guests::edit/$1');
     $routes->post('guests/edit/(:num)', 'Guests::edit/$1');

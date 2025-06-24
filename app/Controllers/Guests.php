@@ -27,19 +27,48 @@ class Guests extends BaseController
         return view('dashboard/guests', $data);
     }
 
+    public function new()
+    {
+        $data = [
+            'title' => 'Add New Guest',
+            'available_rooms' => $this->roomModel->getAvailableRooms()
+        ];
+
+        return view('dashboard/guests/add', $data);
+    }
+
     public function add()
     {
         if (!$this->request->is('post')) {
-            return redirect()->to('dashboard/guests');
+            return redirect()->to('dashboard/guests/new');
         }
 
         $data = $this->request->getPost();
+        
+        // Validate room availability for the selected dates
+        if (!$this->roomModel->isRoomAvailable(
+            $data['room_number'],
+            $data['check_in_date'],
+            $data['check_out_date']
+        )) {
+            return redirect()->to('dashboard/guests/new')
+                ->with('error', 'Selected room is not available for the chosen dates')
+                ->withInput();
+        }
+
+        // Update room status if checking in immediately
+        if ($data['status'] === 'checked_in') {
+            $this->roomModel->update(
+                ['room_number' => $data['room_number']],
+                ['status' => 'occupied']
+            );
+        }
         
         if ($this->guestModel->save($data)) {
             return redirect()->to('dashboard/guests')
                 ->with('success', 'Guest added successfully');
         } else {
-            return redirect()->to('dashboard/guests')
+            return redirect()->to('dashboard/guests/new')
                 ->with('error', 'Failed to add guest. Please check the form.')
                 ->withInput()
                 ->with('validation', $this->guestModel->errors());

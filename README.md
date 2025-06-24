@@ -1,68 +1,125 @@
-# CodeIgniter 4 Application Starter
+# Hotel Management System
 
-## What is CodeIgniter?
+A modern and comprehensive hotel management solution built with CodeIgniter 4, featuring an intuitive dashboard for managing rooms, guests, and service requests.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Features
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### Authentication System
+- Secure login system
+- Role-based access control
+- Protected routes and endpoints
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+### Room Management
+- Complete CRUD operations for rooms
+- Real-time room status tracking (Available, Occupied, Maintenance)
+- Room properties management (Type, AC/Non-AC, Bed Type)
+- Visual status indicators
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### Guest Management
+- Guest registration and profile management
+- Guest history tracking
+- Quick guest information access
+- Custom status badges for guest states
 
-## Installation & updates
+### Service Request System
+- Track and manage service requests
+- Status management (Pending, In Progress, Completed)
+- Integration with room management
+- Service request history
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### Modern UI/UX
+- Responsive Bootstrap 5.3.0 design
+- Fixed sidebar navigation
+- Modern color scheme with CSS variables
+- Enhanced card layouts and shadows
+- Custom status indicators
+- Mobile-friendly interface
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## Technical Stack
 
-## Setup
+- **Framework**: CodeIgniter 4
+- **Database**: MySQL
+- **Frontend**: Bootstrap 5.3.0
+- **Additional Libraries**: 
+  - PHP 7.4+ required
+  - Composer for dependency management
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Installation
 
-## Important Change with index.php
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd hotel_manager
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+2. Install dependencies:
+```bash
+composer install
+```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+3. Configure your environment:
+- Copy `env` to `.env`
+- Update database credentials in `.env`
+- Set your app's base URL in `.env`
 
-**Please** read the user guide for a better explanation of how CI4 works!
+4. Set up the database:
+```bash
+php spark migrate
+php spark db:seed AdminUserSeeder
+```
 
-## Repository Management
+5. Start the development server:
+```bash
+php spark serve
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Database Schema
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+The system uses the following main tables:
+- `users` - System users and authentication
+- `guests` - Guest information and tracking
+- `rooms` - Room details and status
+- `service_requests` - Service request tracking
 
-## Server Requirements
+## Development
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+### Directory Structure
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+```
+hotel_manager/
+├── app/
+│   ├── Controllers/     # Application controllers
+│   ├── Models/         # Database models
+│   ├── Views/          # View templates
+│   └── Config/         # Configuration files
+├── public/            # Public assets
+└── writable/         # Logs and cache
+```
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+### Key Files
+- `app/Config/Routes.php` - Application routes
+- `app/Controllers/Dashboard.php` - Main dashboard controller
+- `app/Views/dashboard/layout.php` - Main layout template
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## Security Features
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+- CSRF Protection
+- SQL Injection Prevention
+- XSS Filtering
+- Session Management
+- Input Validation
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+
+## Support
+
+For support and queries, please open an issue in the repository.
+
+

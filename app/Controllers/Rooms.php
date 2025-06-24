@@ -63,14 +63,9 @@ class Rooms extends BaseController
             
             // Add the ID for validation
             $data['id'] = $id;
-            
-            // Log the received data
-            log_message('debug', 'Received update data for room ' . $id . ': ' . json_encode($data));
 
             try {
-                // Use update instead of save to ensure we're updating
                 if ($this->roomModel->update($id, $data)) {
-                    log_message('debug', 'Successfully updated room ' . $id);
                     if ($this->request->isAJAX()) {
                         return $this->response->setJSON([
                             'success' => true,
@@ -80,7 +75,6 @@ class Rooms extends BaseController
                     return redirect()->to('dashboard/rooms')
                         ->with('success', 'Room updated successfully');
                 } else {
-                    log_message('error', 'Failed to update room ' . $id . '. Model errors: ' . json_encode($this->roomModel->errors()));
                     if ($this->request->isAJAX()) {
                         return $this->response->setJSON([
                             'success' => false,
@@ -93,7 +87,6 @@ class Rooms extends BaseController
                         ->with('validation', $this->roomModel->errors());
                 }
             } catch (\Exception $e) {
-                log_message('error', 'Error updating room ' . $id . ': ' . $e->getMessage());
                 if ($this->request->isAJAX()) {
                     return $this->response->setJSON([
                         'success' => false,
@@ -107,28 +100,27 @@ class Rooms extends BaseController
 
         // Handle GET request (fetch room data)
         if (!$id) {
-            if ($this->request->isAJAX()) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'errors' => ['Room ID not provided']
-                ]);
-            }
             return redirect()->to('dashboard/rooms');
         }
 
         $room = $this->roomModel->find($id);
         if (!$room) {
-            if ($this->request->isAJAX()) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'errors' => ['Room not found']
-                ]);
-            }
             return redirect()->to('dashboard/rooms')
                 ->with('error', 'Room not found');
         }
 
-        return $this->response->setJSON($room);
+        // If it's an AJAX request, return JSON
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON($room);
+        }
+
+        // Otherwise, show the edit form view
+        $data = [
+            'title' => 'Edit Room',
+            'room' => $room
+        ];
+
+        return view('dashboard/rooms/edit', $data);
     }
 
     public function delete($id = null)

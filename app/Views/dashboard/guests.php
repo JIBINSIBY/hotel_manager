@@ -11,24 +11,233 @@
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-bg: #2c3e50;
+            --secondary-bg: #34495e;
+            --accent-color: #3498db;
+            --text-light: #ecf0f1;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .sidebar {
             min-height: 100vh;
-            background-color: #2c3e50;
+            background-color: var(--primary-bg);
             padding-top: 20px;
+            position: fixed;
+            width: inherit;
+            z-index: 1000;
         }
+
         .sidebar .nav-link {
-            color: #ecf0f1;
-            padding: 10px 20px;
-            margin: 5px 0;
+            color: var(--text-light);
+            padding: 12px 20px;
+            margin: 8px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
+
         .sidebar .nav-link:hover {
-            background-color: #34495e;
+            background-color: var(--secondary-bg);
+            transform: translateX(5px);
         }
+
         .sidebar .nav-link.active {
-            background-color: #3498db;
+            background-color: var(--accent-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
         .main-content {
+            margin-left: 16.66667%; /* col-2 width */
+            padding: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             padding: 20px;
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+        .welcome-header {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 15px;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .guest-name {
+            font-weight: 600;
+            color: var(--primary-bg);
+        }
+
+        .guest-email {
+            color: var(--accent-color);
+        }
+
+        .guest-phone {
+            font-family: monospace;
+            color: var(--secondary-bg);
+        }
+
+        .guest-room {
+            font-weight: 600;
+            color: var(--info-color);
+        }
+
+        .guest-dates {
+            color: var(--secondary-bg);
+            font-size: 0.9rem;
+        }
+
+        .guest-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .guest-status i {
+            margin-right: 6px;
+        }
+
+        .status-checked-in {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .status-checked-out {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .status-reserved {
+            background-color: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 0 2px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 8px;
+            padding: 6px 30px 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .add-guest-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .add-guest-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -36,9 +245,10 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar">
-                <div class="text-center mb-4">
-                    <h4 class="text-white">Hotel Manager</h4>
+            <div class="col-md-2 sidebar">
+                <div class="brand-title">
+                    <i class="fas fa-hotel me-2"></i>
+                    Hotel Manager
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -70,16 +280,21 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 main-content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Guest Management</h2>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#guestModal">
+            <div class="col-md-10 main-content">
+                <!-- Welcome Header -->
+                <div class="welcome-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-0">Guest Management</h2>
+                        <p class="text-muted mb-0">Manage your hotel guests and their bookings</p>
+                    </div>
+                    <button class="btn btn-primary add-guest-btn" data-bs-toggle="modal" data-bs-target="#guestModal">
                         <i class="fas fa-plus me-2"></i> Add New Guest
                     </button>
                 </div>
 
                 <?php if (session()->getFlashdata('success')) : ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
                         <?= session()->getFlashdata('success') ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -87,37 +302,16 @@
 
                 <?php if (session()->getFlashdata('error')) : ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
                         <?= session()->getFlashdata('error') ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
 
-                <!-- Debug output -->
-                <?php if (isset($error)): ?>
-                    <div class="alert alert-danger">
-                        <?= $error ?>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Debug information -->
-                <div class="d-none">
-                    Debug Info:
-                    <?php 
-                    if (isset($guests)) {
-                        echo "Guests array exists. Count: " . count($guests);
-                        echo "<pre>";
-                        print_r($guests);
-                        echo "</pre>";
-                    } else {
-                        echo "Guests array is not set";
-                    }
-                    ?>
-                </div>
-
                 <!-- Guests Table -->
                 <div class="card">
                     <div class="card-body">
-                        <table id="guestsTable" class="table table-striped">
+                        <table id="guestsTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -136,24 +330,55 @@
                                     foreach ($guests as $guest): 
                                 ?>
                                     <tr>
-                                        <td><?= esc($guest['first_name'] ?? '') . ' ' . esc($guest['last_name'] ?? '') ?></td>
-                                        <td><?= esc($guest['email'] ?? '') ?></td>
-                                        <td><?= esc($guest['phone'] ?? '') ?></td>
-                                        <td><?= esc($guest['room_number'] ?? '') ?></td>
-                                        <td><?= isset($guest['check_in_date']) ? date('M d, Y', strtotime($guest['check_in_date'])) : '' ?></td>
-                                        <td><?= isset($guest['check_out_date']) ? date('M d, Y', strtotime($guest['check_out_date'])) : '' ?></td>
+                                        <td>
+                                            <div class="guest-name">
+                                                <i class="fas fa-user me-2 text-muted"></i>
+                                                <?= esc($guest['first_name'] ?? '') . ' ' . esc($guest['last_name'] ?? '') ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="guest-email">
+                                                <i class="fas fa-envelope me-2"></i>
+                                                <?= esc($guest['email'] ?? '') ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="guest-phone">
+                                                <i class="fas fa-phone me-2 text-muted"></i>
+                                                <?= esc($guest['phone'] ?? '') ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="guest-room">
+                                                <i class="fas fa-door-open me-2"></i>
+                                                <?= esc($guest['room_number'] ?? '') ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="guest-dates">
+                                                <i class="fas fa-calendar-check me-2 text-success"></i>
+                                                <?= isset($guest['check_in_date']) ? date('M d, Y', strtotime($guest['check_in_date'])) : '' ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="guest-dates">
+                                                <i class="fas fa-calendar-times me-2 text-danger"></i>
+                                                <?= isset($guest['check_out_date']) ? date('M d, Y', strtotime($guest['check_out_date'])) : '' ?>
+                                            </div>
+                                        </td>
                                         <td>
                                             <?php if (isset($guest['status'])): ?>
-                                                <span class="badge bg-<?= $guest['status'] === 'checked_in' ? 'success' : ($guest['status'] === 'checked_out' ? 'danger' : 'warning') ?>">
+                                                <span class="guest-status <?= $guest['status'] === 'checked_in' ? 'status-checked-in' : ($guest['status'] === 'checked_out' ? 'status-checked-out' : 'status-reserved') ?>">
+                                                    <i class="fas <?= $guest['status'] === 'checked_in' ? 'fa-check-circle' : ($guest['status'] === 'checked_out' ? 'fa-sign-out-alt' : 'fa-clock') ?>"></i>
                                                     <?= ucfirst(str_replace('_', ' ', $guest['status'])) ?>
                                                 </span>
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary edit-guest" data-id="<?= $guest['id'] ?? '' ?>">
+                                            <a href="<?= site_url('dashboard/guests/edit/' . ($guest['id'] ?? '')) ?>" class="btn btn-primary btn-action" title="Edit Guest">
                                                 <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-danger delete-guest" data-id="<?= $guest['id'] ?? '' ?>">
+                                            </a>
+                                            <button class="btn btn-danger btn-action delete-guest" data-id="<?= $guest['id'] ?? '' ?>" title="Delete Guest">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -166,111 +391,100 @@
                         </table>
                     </div>
                 </div>
-                
-                <!-- DataTable Initialization Script -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        if (typeof $ !== 'undefined' && $.fn.DataTable) {
-                            $('#guestsTable').DataTable({
-                                "pageLength": 10,
-                                "order": [[0, "asc"]],
-                                "responsive": true
-                            });
-                        } else {
-                            console.error('DataTables is not loaded');
-                        }
-                    });
-                </script>
-            </div>
-        </div>
-    </div>
 
-    <!-- Guest Modal -->
-    <div class="modal fade" id="guestModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Guest Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="guestForm">
-                    <input type="hidden" id="guest_id" name="guest_id">
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control" name="first_name" id="first_name" required>
+                <!-- Guest Modal -->
+                <div class="modal fade" id="guestModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                    Guest Information
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control" name="last_name" id="last_name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Phone</label>
-                                <input type="tel" class="form-control" name="phone" id="phone" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Room Number</label>
-                                <select class="form-select" name="room_number" id="room_number" required>
-                                    <option value="">Select a Room</option>
-                                    <?php foreach ($available_rooms as $room_number => $room_details): ?>
-                                        <option value="<?= esc($room_number) ?>"><?= esc($room_details) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Status</label>
-                                <select class="form-select" name="status" id="status" required>
-                                    <option value="reserved">Reserved</option>
-                                    <option value="checked_in">Checked In</option>
-                                    <option value="checked_out">Checked Out</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Number of Adults</label>
-                                <input type="number" class="form-control" name="number_of_adults" id="number_of_adults" min="1" max="9" value="1" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Number of Children</label>
-                                <input type="number" class="form-control" name="number_of_children" id="number_of_children" min="0" max="9" value="0">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Check-in Date</label>
-                                <input type="text" class="form-control" name="check_in_date" id="check_in_date" required readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Check-out Date</label>
-                                <input type="text" class="form-control" name="check_out_date" id="check_out_date" required readonly>
-                            </div>
+                            <form id="guestForm">
+                                <input type="hidden" id="guest_id" name="guest_id">
+                                <div class="modal-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-user me-2"></i>
+                                                First Name
+                                            </label>
+                                            <input type="text" class="form-control" name="first_name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-user me-2"></i>
+                                                Last Name
+                                            </label>
+                                            <input type="text" class="form-control" name="last_name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-envelope me-2"></i>
+                                                Email
+                                            </label>
+                                            <input type="email" class="form-control" name="email" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-phone me-2"></i>
+                                                Phone
+                                            </label>
+                                            <input type="tel" class="form-control" name="phone" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-door-open me-2"></i>
+                                                Room Number
+                                            </label>
+                                            <select class="form-select" name="room_number" required>
+                                                <?php if (isset($available_rooms)): ?>
+                                                    <?php foreach ($available_rooms as $room_number => $room_description): ?>
+                                                        <option value="<?= esc($room_number) ?>"><?= esc($room_description) ?></option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-user-clock me-2"></i>
+                                                Status
+                                            </label>
+                                            <select class="form-select" name="status" required>
+                                                <option value="reserved">Reserved</option>
+                                                <option value="checked_in">Checked In</option>
+                                                <option value="checked_out">Checked Out</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-calendar-check me-2"></i>
+                                                Check In Date
+                                            </label>
+                                            <input type="date" class="form-control" name="check_in_date" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                <i class="fas fa-calendar-times me-2"></i>
+                                                Check Out Date
+                                            </label>
+                                            <input type="date" class="form-control" name="check_out_date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>
+                                        Save Guest
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Guest</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this guest?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
                 </div>
             </div>
         </div>
@@ -283,184 +497,30 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
-
     <script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        $('#guestsTable').DataTable();
-
-        let bookedDates = [];
-        let deleteGuestId = null;
-        
-        // Initialize date pickers with common settings
-        const datePickerOptions = {
-            format: 'yyyy-mm-dd',
-            autoclose: true,
-            startDate: new Date(),
-            todayHighlight: true
-        };
-
-        // Initialize date pickers
-        $('#check_in_date').datepicker(datePickerOptions);
-        $('#check_out_date').datepicker(datePickerOptions);
-
-        // Function to update booked dates for a room
-        function updateBookedDates(roomNumber, guestId = null) {
-            if (!roomNumber) return;
-
-            $.get(`<?= base_url('dashboard/rooms/booked-dates') ?>`, {
-                room_number: roomNumber,
-                guest_id: guestId
-            })
-            .done(function(response) {
-                bookedDates = response.bookedDates || [];
-                
-                // Reinitialize date pickers with new disabled dates
-                $('#check_in_date').datepicker('destroy');
-                $('#check_out_date').datepicker('destroy');
-                
-                const updatedOptions = {
-                    ...datePickerOptions,
-                    beforeShowDay: function(date) {
-                        const dateStr = date.toISOString().split('T')[0];
-                        return bookedDates.includes(dateStr) ? false : '';
-                    }
-                };
-                
-                $('#check_in_date').datepicker(updatedOptions);
-                $('#check_out_date').datepicker(updatedOptions);
-            });
-        }
-
-        // Handle room selection change
-        $('#room_number').on('change', function() {
-            const roomNumber = $(this).val();
-            const guestId = $('#guest_id').val(); // For edit mode
-            updateBookedDates(roomNumber, guestId);
-        });
-
-        // Handle check-in date change
-        $('#check_in_date').on('change', function() {
-            const checkInDate = $(this).val();
-            if (checkInDate) {
-                $('#check_out_date').datepicker('setStartDate', checkInDate);
-            }
-        });
-
-        // Handle check-out date change
-        $('#check_out_date').on('change', function() {
-            const checkOutDate = $(this).val();
-            if (checkOutDate) {
-                $('#check_in_date').datepicker('setEndDate', checkOutDate);
-            }
-        });
-
-        // Reset form function
-        function resetForm() {
-            $('#guestForm')[0].reset();
-            $('#guest_id').val('');
-            $('#room_number').prop('selectedIndex', 0);
-            $('#check_in_date').val('');
-            $('#check_out_date').val('');
-            updateBookedDates($('#room_number').val());
-        }
-
-        // Edit guest functionality
-        $('.edit-guest').on('click', function(e) {
-            e.preventDefault();
-            const guestId = $(this).data('id');
-            
-            // Reset form before populating
-            resetForm();
-            $('#guest_id').val(guestId);
-            
-            // Fetch guest data
-            $.get(`<?= base_url('dashboard/guests/get') ?>/${guestId}`)
-                .done(function(response) {
-                    if (response.success && response.guest) {
-                        const guest = response.guest;
-                        
-                        // Populate form fields
-                        Object.keys(guest).forEach(key => {
-                            const $field = $(`#${key}`);
-                            if ($field.length) {
-                                if ($field.is('select')) {
-                                    // For select elements
-                                    $field.val(guest[key]).trigger('change');
-                                } else {
-                                    // For other input elements
-                                    $field.val(guest[key]);
-                                }
-                            }
-                        });
-                        
-                        // Update booked dates excluding current guest's dates
-                        updateBookedDates(guest.room_number, guestId);
-                        
-                        // Show modal
-                        $('#guestModal').modal('show');
-                    } else {
-                        alert(response.message || 'Error loading guest data');
-                    }
-                })
-                .fail(function() {
-                    alert('Error loading guest data');
-                });
-        });
-
-        // Add new guest button
-        $('#addNewGuest').on('click', function() {
-            resetForm();
-            $('#guestModal').modal('show');
-        });
-
-        // Delete guest functionality
-        $('.delete-guest').on('click', function(e) {
-            e.preventDefault();
-            deleteGuestId = $(this).data('id');
-            $('#deleteModal').modal('show');
-        });
-
-        // Confirm delete
-        $('#confirmDelete').on('click', function() {
-            if (deleteGuestId) {
-                window.location.href = `<?= base_url('dashboard/guests/delete') ?>/${deleteGuestId}`;
-            }
-        });
-
-        // Form submission
-        $('#guestForm').on('submit', function(e) {
-            e.preventDefault();
-            const guestId = $('#guest_id').val();
-            const url = guestId 
-                ? `<?= base_url('dashboard/guests/update') ?>/${guestId}`
-                : '<?= base_url('dashboard/guests/add') ?>';
-            
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        $('#guestModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert(response.message || 'Error saving guest');
-                    }
-                },
-                error: function() {
-                    alert('Error saving guest');
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('#guestsTable').DataTable({
+                "pageLength": 10,
+                "order": [[0, "asc"]],
+                "language": {
+                    "search": "Search guests:",
+                    "lengthMenu": "Show _MENU_ guests per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ guests",
+                    "emptyTable": "No guests available"
                 }
             });
-        });
 
-        // Modal hidden event
-        $('#guestModal').on('hidden.bs.modal', function() {
-            resetForm();
+            // Delete guest confirmation
+            $('.delete-guest').click(function() {
+                if (confirm('Are you sure you want to delete this guest?')) {
+                    const guestId = $(this).data('id');
+                    window.location.href = `<?= base_url('dashboard/guests/delete/') ?>/${guestId}`;
+                }
+            });
+
+
         });
-    });
     </script>
 </body>
 </html> 

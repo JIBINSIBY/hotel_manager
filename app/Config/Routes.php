@@ -19,11 +19,11 @@ $routes->group('dashboard', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'Dashboard::index');
     
     // Guest management routes
-    $routes->get('guests', 'Dashboard::guests');
-    $routes->get('guests/get/(:num)', 'Dashboard::getGuest/$1');
-    $routes->post('guests/add', 'Dashboard::addGuest');
-    $routes->post('guests/update/(:num)', 'Dashboard::updateGuest/$1');
-    $routes->get('guests/delete/(:num)', 'Dashboard::deleteGuest/$1');
+    $routes->get('guests', 'Guests::index');
+    $routes->post('guests/add', 'Guests::add');
+    $routes->get('guests/edit/(:num)', 'Guests::edit/$1');
+    $routes->post('guests/edit/(:num)', 'Guests::edit/$1');
+    $routes->get('guests/delete/(:num)', 'Guests::delete/$1');
     
     // Room management routes
     $routes->get('rooms', 'Rooms::index');

@@ -5,6 +5,7 @@ namespace Config;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
+use App\Models\RoomModel;
 
 /*
  * --------------------------------------------------------------------
@@ -26,7 +27,7 @@ use CodeIgniter\HotReloader\HotReloader;
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {
         if (ini_get('zlib.output_compression')) {
-            throw FrameworkException::forEnabledZlibOutputCompression();
+            throw FrameworkException::forInvalidSetting('zlib.output_compression', 'php.ini');
         }
 
         while (ob_get_level() > 0) {
@@ -52,4 +53,18 @@ Events::on('pre_system', static function (): void {
             });
         }
     }
+});
+
+// Add event listener for guest status changes
+Events::on('guest_status_changed', static function ($data) {
+    // Get the room model
+    $roomModel = new RoomModel();
+    
+    // Update the room status
+    if (isset($data['room_number'])) {
+        $roomModel->updateRoomStatus($data['room_number']);
+    }
+    
+    // Update all room statuses to ensure consistency
+    $roomModel->updateAllRoomStatuses();
 });

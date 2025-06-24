@@ -54,11 +54,22 @@ app.indexPage = ''
 ```
 
 ### Step 4: Database Setup
+
+Option 1: Using SQL Dump File (Recommended)
 1. Create database through phpMyAdmin:
    - Open [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
    - Click "New" to create a new database
    - Name it "hotel_manager"
    - Set collation to "utf8mb4_unicode_ci"
+
+2. Import the SQL dump:
+   - In phpMyAdmin, select the "hotel_manager" database
+   - Click on "Import" tab
+   - Choose the `hotel_manager.sql` file from the project root
+   - Click "Go" to import the database structure and initial data
+
+Option 2: Using Migrations
+1. Create database through phpMyAdmin (same as above)
 
 2. Run migrations:
 ```bash
@@ -234,35 +245,4 @@ For issues and support:
 The system uses the following main tables:
 - `users` - System users and authentication
 - `guests` - Guest information and tracking
-- `rooms` - Room details and status
-- `service_requests` - Service request tracking
-
-## Development
-
-### Directory Structure
-
-```
-hotel_manager/
-├── app/
-│   ├── Controllers/     # Application controllers
-│   ├── Models/         # Database models
-│   ├── Views/          # View templates
-│   └── Config/         # Configuration files
-├── public/            # Public assets
-└── writable/         # Logs and cache
-```
-
-### Key Files
-- `app/Config/Routes.php` - Application routes
-- `app/Controllers/Dashboard.php` - Main dashboard controller
-- `app/Views/dashboard/layout.php` - Main layout template
-
-## Security Features
-
-- CSRF Protection
-- SQL Injection Prevention
-- XSS Filtering
-- Session Management
-- Input Validation
-
-
+- `
